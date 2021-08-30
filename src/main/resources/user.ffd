@@ -1,0 +1,8 @@
+form: FIXEDWIDTH
+id: 'user'
+name: 'user'
+values: 
+- { name: 'userId', usage: M, type: Integer, length: 15, format: { justify: LEFT } }
+- { name: 'firstName', usage: M, type: String, length: 20 }
+- { name: 'lastName', usage: M, type: String, length: 20 }
+- { name: 'email', usage: M, type: String, length: 30 }
