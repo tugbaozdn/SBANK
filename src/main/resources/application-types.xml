@@ -17,15 +17,6 @@
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#0a132a66-a21b-449a-8919-dcfbbba74d9d">
-    <types:processor-declaration>
-      <types:output-event>
-        <types:message>
-          <types:payload type="userObject"/>
-        </types:message>
-      </types:output-event>
-    </types:processor-declaration>
-  </types:enrichment>
   <types:enrichment select="#7a48f7e9-4a93-4919-b7c7-19b69330a460">
     <types:processor-declaration>
       <types:input-event>
@@ -33,6 +24,15 @@
           <types:payload type="user"/>
         </types:message>
       </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#163d3ddc-2326-4c10-afa5-bd88c4d33a49">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
 </types:mule>

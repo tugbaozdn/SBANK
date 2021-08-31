@@ -26,27 +26,47 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	</flow>
 	<flow name="sbank-get-user-by-ID" doc:id="1d2aa83c-da0f-449f-adbf-c777fd1d238b" >
 		<db:select doc:name="Select" doc:id="7a48f7e9-4a93-4919-b7c7-19b69330a460" config-ref="Database_Config">
-			<db:sql ><![CDATA[SELECT first_name,last_name,user_email FROM users WHERE user_id=:userId]]></db:sql>
-			<db:input-parameters ><![CDATA[#[output application/json
----
-{
-	userId: (attributes.uriParams.userId
-default 0) + payload.userId
+			<db:sql ><![CDATA[SELECT * FROM users WHERE user_id=:userId]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	userId: attributes.uriParams.userId
+
 }]]]></db:input-parameters>
 		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="0a132a66-a21b-449a-8919-dcfbbba74d9d" >
+		<ee:transform doc:name="Transform Message" doc:id="163d3ddc-2326-4c10-afa5-bd88c4d33a49" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/flatfile schemaPath = "userObject.ffd" , segmentIdent = "userObject"
-
+output application/json
 ---
 payload map ( payload01 , indexOfPayload01 ) -> {
 	userId: payload01.user_id,
 	firstName: payload01.first_name,
 	lastName: payload01.last_name,
 	email: payload01.user_email
-}
-]]></ee:set-payload>
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="sbank-insert" doc:id="cf8f6bfb-30b1-4699-b6a6-93aea9d45aeb" >
+		<db:insert doc:name="Insert" doc:id="02ea9d54-a385-4d65-9c7f-15fff81f5da4" config-ref="Database_Config">
+			<db:sql ><![CDATA[Insert into users values (:userId, :userName, :password, :firstName, :lastName, :userEmail, :roleId)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	userId: payload.userId,
+	userName:payload.userName,
+	password:payload.password,
+	firstName:payload.firstName,
+	lastName:payload.lastName,
+	email:payload.userEmail,
+	roleId:payload.roleId
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="f4277978-15e5-4898-a109-47dbd470f273" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	'message':"The user added."
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
