@@ -4,12 +4,23 @@
     <types:type name="user" format="fixedWidth">
       <types:shape format="fixedWidth" element="user" location="user.ffd"/>
     </types:type>
-    <types:type name="userObject" format="fixedWidth">
-      <types:shape format="fixedWidth" element="userObject" location="userObject.ffd"/>
-    </types:type>
   </types:catalog>
-  <types:enrichment select="#c1847c56-6058-4d6a-aafb-d219e0c704a9">
+  <types:enrichment select="#efd1cfee-ea33-4f1a-a57a-fd548b1d5f98">
     <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5f7db561-0a10-4781-bce6-23d4003a3e0b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:input-event>
       <types:output-event>
         <types:message>
           <types:payload type="user"/>
@@ -17,13 +28,40 @@
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
-  <types:enrichment select="#7a48f7e9-4a93-4919-b7c7-19b69330a460">
+  <types:enrichment select="#c278187b-49a1-43d6-a6cd-d910ef3d5869">
     <types:processor-declaration>
       <types:input-event>
         <types:message>
           <types:payload type="user"/>
         </types:message>
       </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#05e7d1bb-94fe-40d9-9b79-876795c9dd18">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#02ea9d54-a385-4d65-9c7f-15fff81f5da4">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c1847c56-6058-4d6a-aafb-d219e0c704a9">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="user"/>
+        </types:message>
+      </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
   <types:enrichment select="#163d3ddc-2326-4c10-afa5-bd88c4d33a49">

@@ -55,19 +55,9 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	password:payload.password,
 	firstName:payload.firstName,
 	lastName:payload.lastName,
-	email:payload.userEmail,
+	userEmail:payload.userEmail,
 	roleId:payload.roleId
 }]]]></db:input-parameters>
 		</db:insert>
-		<ee:transform doc:name="Transform Message" doc:id="f4277978-15e5-4898-a109-47dbd470f273" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
----
-{
-	'message':"The user added."
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 	</flow>
 </mule>
