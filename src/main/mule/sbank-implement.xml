@@ -5,6 +5,25 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="sbank-accounts-get" doc:id="62ee861c-e70a-4604-8fd1-eb760b1d9d85" >
+		<db:select doc:name="Copy_of_Select" doc:id="8892399b-d13d-4844-b903-aa0d1d8bf5cb" config-ref="Database_Config" >
+			<db:sql ><![CDATA[Select account_id, balance,status_id, type_id from account ]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="d4d36384-dc60-4ae7-8396-aa4aafdc0f45" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	accountId: payload01.account_id,
+	balance: payload01.balance,
+	statusId: payload01.status_id,
+	typeId: payload01.type_id
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 	<flow name="sbank-get-users" doc:id="454b4c72-f42c-40ad-9361-f6884d4915b9" >
 		<db:select doc:name="Select" doc:id="49eb2c7e-81c2-4964-8aa9-51c7d5cf8e48" config-ref="Database_Config">
 			<db:sql ><![CDATA[Select user_id,first_name,last_name,user_email from users]]></db:sql>
@@ -59,5 +78,51 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	roleId:payload.roleId
 }]]]></db:input-parameters>
 		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="7aecf20e-dafb-49c6-9f52-4404f2b798e1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"user added..."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="sbank-update-user-byID" doc:id="8c24a433-4836-419a-992f-c9ef6a7bb067" >
+		<db:update doc:name="Update" doc:id="59153455-04f1-441a-a667-ffea221108d1" config-ref="Database_Config">
+			<db:sql ><![CDATA[UPDATE users set user_name=:userName,user_pass=:password WHERE user_id=:userId ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{	
+	userId:attributes.uriParams.userId,	
+	"userName":payload.userName,	
+	"password":payload.password}]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="Transform Message" doc:id="7f533d4a-7400-4943-8d5a-34588d238659" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:"user updated."
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="sbank-user-delete-by-id" doc:id="8a688ab3-a6c5-4123-8c7b-3381ce504b4a" >
+		<db:delete doc:name="Delete" doc:id="4977085d-1309-4df4-aa18-8ae699f771d3" config-ref="Database_Config">
+			<db:sql ><![CDATA[DELETE FROM users WHERE user_id=:userId]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'userId': attributes.uriParams.userId}]]]></db:input-parameters>
+		</db:delete>
+		<ee:transform doc:name="Transform Message" doc:id="b05330b6-dc8a-4030-98e3-97ad453b10ca" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	message:"The user deleted..."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</flow>
 </mule>
